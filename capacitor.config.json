@@ -1,0 +1,6 @@
+{
+  "appId": "com.controledegastos",
+  "appName": "Controle de gastos",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
