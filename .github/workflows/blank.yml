@@ -19,23 +19,28 @@ jobs:
         run: |
           sudo apt-get install -y build-essential python3
 
-      # Passo 3: Configuração do Node.js
+      # Passo 3: Instalar a versão mais recente do node-gyp
+      - name: Instalar node-gyp
+        run: |
+          npm install -g node-gyp
+
+      # Passo 4: Configuração do Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      # Passo 4: Instalar dependências do projeto
+      # Passo 5: Instalar dependências do projeto
       - name: Instalar dependências
         run: |
           npm install
 
-      # Passo 5: Sincronizar o Capacitor com o Android
+      # Passo 6: Sincronizar o Capacitor com o Android
       - name: Sincronizar Capacitor com Android
         run: |
           npx cap sync android
 
-      # Passo 6: Abrir o projeto no Android Studio (opcional)
+      # Passo 7: Abrir o projeto no Android Studio (opcional)
       - name: Abrir no Android Studio
         run: |
           npx cap open android
