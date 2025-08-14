@@ -1,6 +1,3 @@
-Aqui está o código completo sem explicações:
-
-```yaml
 name: Build APK - Controle de Gastos
 
 on:
@@ -55,4 +52,3 @@ jobs:
         with:
           name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
-```
