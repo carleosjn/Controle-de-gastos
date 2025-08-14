@@ -13,22 +13,18 @@ jobs:
       - name: Checar o código do repositório
         uses: actions/checkout@v2
 
-      - name: Instalar dependências de build
-        run: |
-          sudo apt-get install -y build-essential python3
-
-      - name: Limpar cache e instalar dependências
-        run: |
-          npm install -g npx --force
-          npm cache clean --force
-          rm -rf node_modules
-          npm install
-          npm install @capacitor/core @capacitor/cli
-
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
+
+      - name: Instalar dependências de build e limpar cache
+        run: |
+          sudo apt-get install -y build-essential python3
+          npm cache clean --force
+          rm -rf node_modules
+          npm install
+          npm install @capacitor/core @capacitor/cli @capacitor/android
 
       - name: Configurar SDK Android
         uses: android-actions/setup-android@v2
@@ -37,18 +33,13 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: Abrir no Android Studio
-        run: |
-          npx cap open android
-
       - name: Construir APK
         run: |
-          npx cap open android
           cd android
           ./gradlew assembleDebug
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3.2
+        uses: actions/upload-artifact@v4
         with:
           name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
