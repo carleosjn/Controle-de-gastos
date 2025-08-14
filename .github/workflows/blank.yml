@@ -41,11 +41,10 @@ jobs:
         with:
           node-version: '16'
 
-      # Passo 7: Verificar instalação do npx
-      - name: Verificar instalação do npx
+      # Passo 7: Forçar instalação do npx
+      - name: Forçar instalação do npx
         run: |
-          npm bin -g
-          npm install -g npx
+          npm install -g npx --force
 
       # Passo 8: Sincronizar o Capacitor com o Android
       - name: Sincronizar Capacitor com Android
@@ -56,3 +55,4 @@ jobs:
       - name: Abrir no Android Studio
         run: |
           npx cap open android
+
