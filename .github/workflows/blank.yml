@@ -44,7 +44,8 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Fazer upload do APK como artefato
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1
         with:
           name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
