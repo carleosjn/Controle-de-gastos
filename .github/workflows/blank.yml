@@ -14,23 +14,28 @@ jobs:
       - name: Checar o código do repositório
         uses: actions/checkout@v2
 
-      # Passo 2: Configuração do Node.js
+      # Passo 2: Instalar dependências de build
+      - name: Instalar dependências de build
+        run: |
+          sudo apt-get install -y build-essential python3
+
+      # Passo 3: Configuração do Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      # Passo 3: Instalar dependências do projeto
+      # Passo 4: Instalar dependências do projeto
       - name: Instalar dependências
         run: |
           npm install
 
-      # Passo 4: Sincronizar o Capacitor com o Android
+      # Passo 5: Sincronizar o Capacitor com o Android
       - name: Sincronizar Capacitor com Android
         run: |
           npx cap sync android
 
-      # Passo 5: Abrir o projeto no Android Studio (opcional)
+      # Passo 6: Abrir o projeto no Android Studio (opcional)
       - name: Abrir no Android Studio
         run: |
           npx cap open android
