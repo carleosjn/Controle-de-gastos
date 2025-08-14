@@ -10,51 +10,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
 
-      - name: Configurar Node.js 20
-        uses: actions/setup-node@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: '20'
 
-      - name: Instalar dependências
+      - name: Instalar dependências de build e limpar cache
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential python3
           npm ci
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Configurar Java JDK 17
+      - name: Configurar JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          ndk-version: '25.1.8937393'
-          cmake-version: '3.22.1'
+        uses: android-actions/setup-android@v2
 
-      - name: Configurar variáveis de ambiente Android
-        run: |
-          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
-          echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
-
-      - name: Sincronizar Capacitor
+      - name: Sincronizar Capacitor com o Android
         run: |
           npx cap sync android
 
-      - name: Build APK Debug
+      - name: Construir APK
         run: |
           cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug
 
-      - name: Upload do APK
-        uses: actions/upload-artifact@v4
+      - name: Fazer upload do APK como artefato
+        uses: actions/upload-artifact@v3
         with:
-          name: app-debug
+          name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
