@@ -14,37 +14,51 @@ jobs:
       - name: Checar o código do repositório
         uses: actions/checkout@v2
 
-      # Passo 2: Configuração do Node.js
+      # Passo 2: Instalar dependências de build
+      - name: Instalar dependências de build
+        run: |
+          sudo apt-get install -y build-essential python3
+
+      # Passo 3: Instalar o Capacitor
+      - name: Instalar o Capacitor
+        run: |
+          npm install @capacitor/core @capacitor/cli
+
+      # Passo 4: Limpar dependências e reinstalar
+      - name: Limpar dependências e reinstalar
+        run: |
+          rm -rf node_modules
+          npm install
+
+      # Passo 5: Instalar a versão mais recente do node-gyp
+      - name: Instalar node-gyp
+        run: |
+          npm install -g node-gyp
+
+      # Passo 6: Configuração do Node.js para a versão 20
       - name: Configurar Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '20'
 
-      # Passo 3: Limpar e forçar reinstalação para evitar conflitos EEXIST
-      - name: Limpar ambiente e instalar dependências
+      # Passo 7: Forçar instalação do npx
+      - name: Forçar instalação do npx
         run: |
-          rm -rf /opt/hostedtoolcache/node/16.20.2/x64/bin/npx || true
-          npm cache clean --force
-          npm install
+          npm install -g npx --force
 
-      # Passo 4: Configurar ambiente Android
-      - name: Configurar SDK Android
-        uses: android-actions/setup-android@v2
-
-      # Passo 5: Sincronizar o Capacitor com o Android
+      # Passo 8: Sincronizar o Capacitor com o Android
       - name: Sincronizar Capacitor com Android
         run: |
           npx cap sync android
 
-      # Passo 6: Construir o APK
-      - name: Construir APK
+      # Passo 9: Abrir o projeto no Android Studio (opcional)
+      - name: Abrir no Android Studio
         run: |
-          cd android
-          ./gradlew assembleDebug
+          npx cap open android
 
-      # Passo 7: Fazer upload do APK gerado (opcional)
-      - name: Fazer upload do APK
-        uses: actions/upload-artifact@v2
+      # Passo 10: Upload do artefato (APK gerado)
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: controle-de-gastos-apk
+          path: path/to/your/generated/apk
