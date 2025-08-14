@@ -1,4 +1,4 @@
-nome: Build APK - Controle de Gastos
+name: Build APK - Controle de Gastos
 
 on:
   push:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Baixar código do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
           node-version: '20'
           cache: 'npm'
@@ -33,7 +33,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v2
 
       - name: Sincronizar Capacitor com Android
         run: |
@@ -45,7 +45,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Fazer upload do APK como artefato
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
