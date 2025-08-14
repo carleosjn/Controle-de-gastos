@@ -1,4 +1,4 @@
-name: Build APK - Controle de Gastos
+nome: Build APK - Controle de Gastos
 
 on:
   push:
@@ -10,26 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checar o código do repositório
-        uses: actions/checkout@v2
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Instalar dependências de build e limpar cache
         run: |
+          sudo apt-get update
           sudo apt-get install -y build-essential python3
-          npm cache clean --force
-          rm -rf node_modules
-          npm install
+          npm ci
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Configurar SDK Android
-        uses: android-actions/setup-android@v2
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Sincronizar Capacitor com o Android
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Sincronizar Capacitor com Android
         run: |
           npx cap sync android
 
@@ -38,8 +44,8 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
+      - name: Fazer upload do APK como artefato
+        uses: actions/upload-artifact@v4
         with:
           name: controle-de-gastos-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
