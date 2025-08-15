@@ -34,6 +34,10 @@ jobs:
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v2
 
+      - name: Adicionar plataforma Android
+        run: |
+          npx cap add android
+
       - name: Sincronizar Capacitor com o Android
         run: |
           npx cap sync android
