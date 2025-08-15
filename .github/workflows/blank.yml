@@ -22,9 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential python3
-          npm cache clean --force
-          rm -rf node_modules
-          npm ci
+          npm install
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
       - name: Configurar JDK
@@ -36,10 +34,9 @@ jobs:
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v2
 
-      - name: Validar estrutura do projeto
+      - name: Adicionar plataforma Android
         run: |
-          ls -la android/
-          cat android/settings.gradle || echo "settings.gradle não encontrado"
+          npx cap add android
 
       - name: Sincronizar Capacitor com o Android
         run: |
